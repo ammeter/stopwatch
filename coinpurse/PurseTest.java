@@ -43,15 +43,15 @@ public class PurseTest {
     public void testInsert()
     {
         Purse purse = new Purse(3);
-        Valuable valuable1 = new Coin(5);
-        Valuable valuable2 = new Coin(10);
-        Valuable valuable3 = new Coin(1);
-        assertTrue( purse.insert(valuable1));
-        assertTrue( purse.insert(valuable2));
-        assertTrue( purse.insert(valuable3));
+        Coin coin1 = new Coin(5);
+        Coin coin2 = new Coin(10);
+        Coin coin3 = new Coin(1);
+        assertTrue( purse.insert(coin1));
+        assertTrue( purse.insert(coin2));
+        assertTrue( purse.insert(coin3));
         assertEquals( 3, purse.count() );
         // purse is full so insert should fail
-        assertFalse( purse.insert(new BankNote(1)) );
+        assertFalse( purse.insert(new Coin(1)) );
     }
     
 
@@ -104,7 +104,7 @@ public class PurseTest {
 			Coin coin = new Coin(value);
 			assertTrue(purse.insert(coin));
 			assertEquals(value,  purse.getBalance(), TOL);
-			Valuable[] result = purse.withdraw(value);
+			Coin[] result = purse.withdraw(value);
 			assertTrue( result != null );
 			assertEquals( 1, result.length );
 			assertSame(  coin, result[0] );
@@ -128,10 +128,10 @@ public class PurseTest {
 		}
 		assertEquals(amount1+amount2, purse.getBalance(), TOL );
 		assertEquals(10, purse.count() );
-		Valuable[] wd1 = purse.withdraw(amount1);
+		Coin[] wd1 = purse.withdraw(amount1);
 		assertEquals(amount1, sumValue(wd1), TOL );
 		assertEquals(amount2, purse.getBalance(), TOL );
-		Valuable[] wd2 = purse.withdraw(amount2);
+		Coin[] wd2 = purse.withdraw(amount2);
 		assertEquals(0, purse.getBalance(), TOL );
 	}
 
@@ -152,10 +152,10 @@ public class PurseTest {
 	 * @param wd1 array of coins
 	 * @return sum of values of the coins
 	 */
-	private double sumValue(Valuable[] wd1)  {
+	private double sumValue(Coin[] wd1)  {
 		if (wd1 == null) return 0;
 		double sum = 0;
-		for(Valuable c: wd1) if (c != null) sum += c.getValue();
+		for(Coin c: wd1) if (c != null) sum += c.getValue();
 		return sum;
 	}
 }

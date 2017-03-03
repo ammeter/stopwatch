@@ -9,20 +9,17 @@ import java.util.Scanner;
  * balance.
  */
 public class ConsoleDialog {
-	// default currency for this dialog
 	public static final String CURRENCY = "Baht";
-    // use a single java.util.Scanner object for reading all input
     private static Scanner console = new Scanner( System.in );
     
-	//TODO How does this object get a Purse?  DO NOT WRITE "new Purse(xx)".
     private Purse purse;
     
     /** 
      * Initialize a new Purse dialog.
      * @param purse is the Purse to interact with.
      */
-    public ConsoleDialog( ) {
-
+    public ConsoleDialog(Purse purse) {
+    	this.purse = purse;
     }
     
     /** run the user interface */
@@ -53,18 +50,10 @@ public class ConsoleDialog {
         Scanner scanline = new Scanner(inline);
         while( scanline.hasNextDouble() ) {
             double value = scanline.nextDouble();
-            if(value >= 20){
-            	Valuable coin = new BankNote(value);
-                System.out.printf("Deposit %s... ", coin.toString() );
-                boolean ok = purse.insert(coin);
-                System.out.println( (ok? "ok" : "FAILED") );
-            }
-            else{
-            	Valuable coin = new Coin(value);
+            	Coin coin = new Coin(value);
             	System.out.printf("Deposit %s... ", coin.toString() );
             	boolean ok = purse.insert(coin);
             	System.out.println( (ok? "ok" : "FAILED") );
-            }
         }
         if ( scanline.hasNext() )
             System.out.println("Invalid input: "+scanline.next() );
@@ -77,13 +66,13 @@ public class ConsoleDialog {
         System.out.print("How much to withdraw? ");
         if ( console.hasNextDouble() ) {
              double amount = console.nextDouble( );
-             Valuable[] valuable = purse.withdraw(amount);
-             if ( valuable == null ) 
+             Valuable[] coin = purse.withdraw(amount);
+             if ( coin == null ) 
                 System.out.printf("Sorry, couldn't withdraw %g %s\n", amount, CURRENCY);
              else {
                 System.out.print("You withdrew:");
-                for(int k=0; k<valuable.length; k++) {
-                	System.out.print(" " + valuable[k].toString() );
+                for(int k=0; k<coin.length; k++) {
+                	System.out.print(" " + coin[k].toString() );
                 }
                 System.out.println();
             }
